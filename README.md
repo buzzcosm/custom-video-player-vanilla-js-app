@@ -21,3 +21,5 @@ Extended with additional functions:
 - [Mozilla - Picture-in-Picture API](https://developer.mozilla.org/en-US/docs/Web/API/Picture-in-Picture_API)
 - [Chrome for Developers - Picture-in-Picture](https://developer.chrome.com/docs/web-platform/document-picture-in-picture)
 - [svgrepo](https://www.svgrepo.com/)
+- [User Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent)
+- [Why does Chrome send four browsers in the user-agent header?](https://security.stackexchange.com/questions/126407/why-does-chrome-send-four-browsers-in-the-user-agent-header)
