@@ -196,17 +196,25 @@ function loadVideo() {
 
 // Event Listeners ---------------------------- //
 
-// On Load
-window.onload = loadVideo;
-// On Actions
-ui.playBtn.onclick = togglePlay;
-ui.video.onclick = togglePlay;
-ui.video.ontimeupdate = updateProgress;
-ui.video.oncanplay = updateProgress;
-ui.progressRange.onclick = setProgress;
-ui.volumeRange.onclick = changeVolume;
-ui.volumeIcon.onclick = toggleMute;
-ui.speed.onchange = changeSpeed;
-ui.pipBtn.onclick = togglePictureInPicture;
-ui.fullscreenBtn.onclick = toggleFullscreen;
-ui.videosSelector.onchange = loadVideo;
+const addListeners = () => {
+  [
+    { element: ui.playBtn, event: 'click', handler: togglePlay },
+    { element: ui.video, event: 'click', handler: togglePlay },
+    { element: ui.video, event: 'timeupdate', handler: updateProgress },
+    { element: ui.video, event: 'canplay', handler: updateProgress },
+    { element: ui.progressRange, event: 'click', handler: setProgress },
+    { element: ui.volumeRange, event: 'click', handler: changeVolume },
+    { element: ui.volumeIcon, event: 'click', handler: toggleMute },
+    { element: ui.speed, event: 'change', handler: changeSpeed },
+    { element: ui.pipBtn, event: 'click', handler: togglePictureInPicture },
+    { element: ui.fullscreenBtn, event: 'click', handler: toggleFullscreen },
+    { element: ui.videosSelector, event: 'change', handler: loadVideo },
+  ].forEach(({ element, event, handler }) => {
+    element.addEventListener(event, handler);
+  });
+};
+
+window.addEventListener('load', () => {
+  loadVideo();
+  addListeners();
+});
