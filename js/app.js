@@ -50,9 +50,10 @@ function displayTime(time) {
 
 // Update progress bar as the video plays
 function updateProgress() {
-  ui.progressBar.style.width = `${(ui.video.currentTime / ui.video.duration) * 100}%`;
-  ui.currentTime.textContent = `${displayTime(ui.video.currentTime)} /`;
-  ui.duration.textContent = `${displayTime(ui.video.duration)}`;
+  const { currentTime, duration } = ui.video;
+  ui.progressBar.style.width = `${(currentTime / duration) * 100}%`;
+  ui.currentTime.textContent = `${displayTime(currentTime)} /`;
+  ui.duration.textContent = `${displayTime(duration)}`;
 }
 
 // Click to seek within the video
@@ -185,13 +186,16 @@ function populateVideoSelect() {
   });
 }
 
-function loadVideo() {
-  if (ui.videosSelector.options.length === 0) {
-    // Check if there are no options
-    populateVideoSelect();
+async function loadVideo() {
+  try {
+    if (ui.videosSelector.options.length === 0) {
+      populateVideoSelect();
+    }
+    ui.video.src = ui.videosSelector.options[ui.videosSelector.selectedIndex].value;
+    ui.video.load(); 
+  } catch (error) {
+    console.error("Error loading video:", error);
   }
-  ui.video.src = ui.videosSelector.options[ui.videosSelector.selectedIndex].value;
-  ui.video.load();
 }
 
 // Event Listeners ---------------------------- //
