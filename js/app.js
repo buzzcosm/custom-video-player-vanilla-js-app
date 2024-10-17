@@ -1,63 +1,65 @@
 import { videos } from "./modules/videos.js";
 
-const player = document.querySelector(".player");
-const video = document.querySelector(".video");
-const progressRange = document.querySelector(".progress-range");
-const progressBar = document.querySelector(".progress-bar");
-const playBtn = document.getElementById("play-btn");
-const volumeIcon = document.getElementById("volume-icon");
-const volumeRange = document.querySelector(".volume-range");
-const volumeBar = document.querySelector(".volume-bar");
-const currentTime = document.querySelector(".time-elapsed");
-const duration = document.querySelector(".time-duration");
-const speed = document.querySelector(".player-speed");
-const pipBtn = document.getElementById("pip");
-const fullscreenBtn = document.querySelector(".fullscreen");
-const videosSelector = document.getElementById('videos');
+const ui = {
+    player: document.querySelector(".player"),
+    video: document.querySelector(".video"),
+    progressRange: document.querySelector(".progress-range"),
+    progressBar: document.querySelector(".progress-bar"),
+    playBtn: document.getElementById("play-btn"),
+    volumeIcon: document.getElementById("volume-icon"),
+    volumeRange: document.querySelector(".volume-range"),
+    volumeBar: document.querySelector(".volume-bar"),
+    currentTime: document.querySelector(".time-elapsed"),
+    duration: document.querySelector(".time-duration"),
+    speed: document.querySelector(".player-speed"),
+    pipBtn: document.getElementById("pip"),
+    fullscreenBtn: document.querySelector(".fullscreen"),
+    videosSelector: document.getElementById("videos")
+  };
 
 // Play & Pause ----------------------------------- //
 
 function showPlayIcon() {
-    playBtn.classList.replace("fa-pause", "fa-play");
-    playBtn.setAttribute("title", "Play");
+  ui.playBtn.classList.replace("fa-pause", "fa-play");
+  ui.playBtn.setAttribute("title", "Play");
 }
 
 function togglePlay() {
-    if (video.paused) {
-        video.play();
-        playBtn.classList.replace("fa-play", "fa-pause");
-        playBtn.setAttribute("title", "Pause");
-    } else {
-        video.pause();
-        showPlayIcon();
-    }
+  if (ui.video.paused) {
+    ui.video.play();
+    ui.playBtn.classList.replace("fa-play", "fa-pause");
+    ui.playBtn.setAttribute("title", "Pause");
+  } else {
+    ui.video.pause();
+    showPlayIcon();
+  }
 }
 
 // On Video End, Show Play Button Icon
-video.addEventListener("ended", showPlayIcon);
+ui.video.addEventListener("ended", showPlayIcon);
 
 // Progress Bar ---------------------------------- //
 
 // Calculate display time format
 function displayTime(time) {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    const displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
-    return `${minutes}:${displaySeconds}`;
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  const displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
+  return `${minutes}:${displaySeconds}`;
 }
 
 // Update progress bar as the video plays
 function updateProgress() {
-    progressBar.style.width = `${(video.currentTime / video.duration) * 100}%`;
-    currentTime.textContent = `${displayTime(video.currentTime)} /`;
-    duration.textContent = `${displayTime(video.duration)}`;
+  ui.progressBar.style.width = `${(ui.video.currentTime / ui.video.duration) * 100}%`;
+  ui.currentTime.textContent = `${displayTime(ui.video.currentTime)} /`;
+  ui.duration.textContent = `${displayTime(ui.video.duration)}`;
 }
 
 // Click to seek within the video
 function setProgress(e) {
-    const newTime = e.offsetX / progressRange.offsetWidth;
-    progressBar.style.width = `${newTime * 100}%`;
-    video.currentTime = newTime * video.duration;
+  const newTime = e.offsetX / ui.progressRange.offsetWidth;
+  ui.progressBar.style.width = `${newTime * 100}%`;
+  ui.video.currentTime = newTime * ui.video.duration;
 }
 
 // Volume Controls --------------------------- //
@@ -67,55 +69,52 @@ let lastIcon = "fa-volume-up";
 
 // Volume Bar
 function changeVolume(e) {
-    let volume = e.offsetX / volumeRange.offsetWidth;
-    // Rounding volume up or down
-    if (volume < 0.1) {
-        volume = 0;
-    }
-    if (volume > 0.9) {
-        volume = 1;
-    }
-    volumeBar.style.width = `${volume * 100}%`;
-    video.volume = volume;
-    console.log(video.volume);
-    // Change icon depending on volume
-    volumeIcon.className = "";
-    if (volume > 0.7) {
-        volumeIcon.classList.add("fas", "fa-volume-up");
-        lastIcon = "fa-volume-up";
-    } else if (volume < 0.7 && volume > 0) {
-        volumeIcon.classList.add("fas", "fa-volume-down");
-        lastIcon = "fa-volume-down";
-    } else if (volume === 0) {
-        volumeIcon.classList.add("fas", "fa-volume-off");
-        lastIcon = "fa-volume-off";
-    }
-    lastVolume = volume;
+  let volume = e.offsetX / ui.volumeRange.offsetWidth;
+  // Rounding volume up or down
+  if (volume < 0.1) {
+    volume = 0;
+  }
+  if (volume > 0.9) {
+    volume = 1;
+  }
+  ui.volumeBar.style.width = `${volume * 100}%`;
+  ui.video.volume = volume;
+  // Change icon depending on volume
+  ui.volumeIcon.className = "";
+  if (volume > 0.7) {
+    ui.volumeIcon.classList.add("fas", "fa-volume-up");
+    lastIcon = "fa-volume-up";
+  } else if (volume < 0.7 && volume > 0) {
+    ui.volumeIcon.classList.add("fas", "fa-volume-down");
+    lastIcon = "fa-volume-down";
+  } else if (volume === 0) {
+    ui.volumeIcon.classList.add("fas", "fa-volume-off");
+    lastIcon = "fa-volume-off";
+  }
+  lastVolume = volume;
 }
 
 // Mute/Unmute
 function toggleMute() {
-    volumeIcon.className = "";
-    if (video.volume) {
-        lastVolume = video.volume;
-        video.volume = 0;
-        volumeBar.style.width = 0;
-        volumeIcon.classList.add("fas", "fa-volume-mute");
-        volumeIcon.setAttribute("title", "Unmute");
-    } else {
-        video.volume = lastVolume;
-        volumeBar.style.width = `${lastVolume * 100}%`;
-        volumeIcon.classList.add("fas", lastIcon);
-        volumeIcon.setAttribute("title", "Mute");
-    }
+  ui.volumeIcon.className = "";
+  if (ui.video.volume) {
+    lastVolume = ui.video.volume;
+    ui.video.volume = 0;
+    ui.volumeBar.style.width = 0;
+    ui.volumeIcon.classList.add("fas", "fa-volume-mute");
+    ui.volumeIcon.setAttribute("title", "Unmute");
+  } else {
+    ui.video.volume = lastVolume;
+    ui.volumeBar.style.width = `${lastVolume * 100}%`;
+    ui.volumeIcon.classList.add("fas", lastIcon);
+    ui.volumeIcon.setAttribute("title", "Mute");
+  }
 }
 
 // Change Playback Speed -------------------- //
 
 function changeSpeed() {
-    // console.log("video playback rate", video.playbackRate);
-    // console.log("selected value", speed.value);
-    video.playbackRate = speed.value;
+  ui.video.playbackRate = ui.speed.value;
 }
 
 // Picture in Picture ----------------------- //
@@ -124,7 +123,7 @@ function togglePictureInPicture() {
   if (document.pictureInPictureElement) {
     document.exitPictureInPicture();
   } else if (document.pictureInPictureEnabled) {
-    video.requestPictureInPicture();
+    ui.video.requestPictureInPicture();
   }
 }
 
@@ -132,41 +131,45 @@ function togglePictureInPicture() {
 
 /* View in fullscreen */
 function openFullscreen(elem) {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
-      elem.msRequestFullscreen();
-    }
-    video.classList.add("video-fullscreen");
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) {
+    /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) {
+    /* Chrome, Safari and Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    /* IE / Edge */
+    elem.msRequestFullscreen();
+  }
+  ui.video.classList.add("video-fullscreen");
+  ui.pipBtn.hidden = true;
 }
-  
+
 /* Close fullscreen */
 function closeFullscreen() {
-if (document.exitFullscreen) {
+  if (document.exitFullscreen) {
     document.exitFullscreen();
-} else if (document.webkitExitFullscreen) {
-    /* Safari */
+  } else if (document.mozCancelFullScreen) {
+    /* Firefox */
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    /* Chrome, Safari and Opera */
     document.webkitExitFullscreen();
-} else if (document.msExitFullscreen) {
-    /* IE11 */
+  } else if (document.msExitFullscreen) {
+    /* IE / Edge */
     document.msExitFullscreen();
-}
-video.classList.remove("video-fullscreen");
+  }
+  ui.video.classList.remove("video-fullscreen");
+  ui.pipBtn.hidden = false;
 }
 
 let fullscreen = false;
 
 // Toggle Fullscreen
 function toggleFullscreen() {
-  if (!fullscreen) {
-    openFullscreen(player);
-    pipBtn.hidden = true;
-  } else {
-    closeFullscreen();
-    pipBtn.hidden = false;
-  }
+  !fullscreen ? openFullscreen(ui.player) : closeFullscreen();
   fullscreen = !fullscreen;
 }
 
@@ -174,20 +177,21 @@ function toggleFullscreen() {
 
 // Function to populate the select dropdown
 function populateVideoSelect() {
-    videos.forEach(video => {
-      const option = document.createElement('option');
-      option.value = video.source; // Setting the value to the video source URL
-      option.textContent = video.title; // Setting the text of the option to the video title
-      videosSelector.appendChild(option);
-    });
+  videos.forEach((video) => {
+    const option = document.createElement("option");
+    option.value = video.source; // Setting the value to the video source URL
+    option.textContent = video.title; // Setting the text of the option to the video title
+    ui.videosSelector.appendChild(option);
+  });
 }
 
 function loadVideo() {
-    if (videosSelector.options.length === 0) { // Check if there are no options
-        populateVideoSelect();
-    }
-    video.src = videosSelector.options[videosSelector.selectedIndex].value;
-    video.load();
+  if (ui.videosSelector.options.length === 0) {
+    // Check if there are no options
+    populateVideoSelect();
+  }
+  ui.video.src = ui.videosSelector.options[ui.videosSelector.selectedIndex].value;
+  ui.video.load();
 }
 
 // Event Listeners ---------------------------- //
@@ -195,14 +199,14 @@ function loadVideo() {
 // On Load
 window.addEventListener("load", loadVideo);
 
-playBtn.addEventListener("click", togglePlay);
-video.addEventListener("click", togglePlay);
-video.addEventListener("timeupdate", updateProgress);
-video.addEventListener("canplay", updateProgress);
-progressRange.addEventListener("click", setProgress);
-volumeRange.addEventListener("click", changeVolume);
-volumeIcon.addEventListener("click", toggleMute);
-speed.addEventListener("change", changeSpeed);
-pipBtn.addEventListener("click", togglePictureInPicture);
-fullscreenBtn.addEventListener("click", toggleFullscreen);
-videosSelector.addEventListener("change", loadVideo);
+ui.playBtn.addEventListener("click", togglePlay);
+ui.video.addEventListener("click", togglePlay);
+ui.video.addEventListener("timeupdate", updateProgress);
+ui.video.addEventListener("canplay", updateProgress);
+ui.progressRange.addEventListener("click", setProgress);
+ui.volumeRange.addEventListener("click", changeVolume);
+ui.volumeIcon.addEventListener("click", toggleMute);
+ui.speed.addEventListener("change", changeSpeed);
+ui.pipBtn.addEventListener("click", togglePictureInPicture);
+ui.fullscreenBtn.addEventListener("click", toggleFullscreen);
+ui.videosSelector.addEventListener("change", loadVideo);
