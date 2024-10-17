@@ -39,6 +39,26 @@ video {
   height: auto;
 }
 
+/* Videos Library */
+.videos-library {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.videos {
+  background: black;
+  border: none;
+  border-radius: 5px;
+  color: var(--font-color);
+  font-size: 18px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
 /* Containers */
 .show-controls {
   width: 100%;
@@ -233,25 +253,6 @@ select > option {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-}
-
-/* Videos Library */
-.videos-library {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-}
-
-.videos {
-  background: rgba(0, 0, 0, 0.5);
-  border: none;
-  border-radius: 5px;
-  color: var(--font-color);
-  font-size: 18px;
-  padding: 5px 10px;
-  cursor: pointer;
 }
 
 /* Media Query: Large Smartphone (Vertical) */
