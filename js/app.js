@@ -197,16 +197,16 @@ function loadVideo() {
 // Event Listeners ---------------------------- //
 
 // On Load
-window.addEventListener("load", loadVideo);
-
-ui.playBtn.addEventListener("click", togglePlay);
-ui.video.addEventListener("click", togglePlay);
-ui.video.addEventListener("timeupdate", updateProgress);
-ui.video.addEventListener("canplay", updateProgress);
-ui.progressRange.addEventListener("click", setProgress);
-ui.volumeRange.addEventListener("click", changeVolume);
-ui.volumeIcon.addEventListener("click", toggleMute);
-ui.speed.addEventListener("change", changeSpeed);
-ui.pipBtn.addEventListener("click", togglePictureInPicture);
-ui.fullscreenBtn.addEventListener("click", toggleFullscreen);
-ui.videosSelector.addEventListener("change", loadVideo);
+window.onload = loadVideo;
+// On Actions
+ui.playBtn.onclick = togglePlay;
+ui.video.onclick = togglePlay;
+ui.video.ontimeupdate = updateProgress;
+ui.video.oncanplay = updateProgress;
+ui.progressRange.onclick = setProgress;
+ui.volumeRange.onclick = changeVolume;
+ui.volumeIcon.onclick = toggleMute;
+ui.speed.onchange = changeSpeed;
+ui.pipBtn.onclick = togglePictureInPicture;
+ui.fullscreenBtn.onclick = toggleFullscreen;
+ui.videosSelector.onchange = loadVideo;
